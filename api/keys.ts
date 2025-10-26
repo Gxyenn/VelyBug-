@@ -1,3 +1,4 @@
+
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { connectToDatabase } from './lib/mongodb';
 import { ObjectId } from 'mongodb';
@@ -19,6 +20,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         const insertedKey = { id: result.insertedId.toHexString(), ...newKey };
         return res.status(201).json(insertedKey);
       }
+      case 'PUT': {
+        const { id, ...keyData } = req.body;
+        if (!id || typeof id !== 'string') {
+          return res.status(400).json({ message: 'A valid key ID is required for update' });
+        }
+        const result = await keysCollection.updateOne({ _id: new ObjectId(id) }, { $set: keyData });
+        if (result.matchedCount === 0) {
+          return res.status(404).json({ message: 'Key not found' });
+        }
+        return res.status(200).json({ id, ...keyData });
+      }
       case 'DELETE': {
         const { id } = req.query;
         if (!id || typeof id !== 'string') {
@@ -28,7 +40,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         return res.status(204).end();
       }
       default:
-        res.setHeader('Allow', ['GET', 'POST', 'DELETE']);
+        res.setHeader('Allow', ['GET', 'POST', 'PUT', 'DELETE']);
         return res.status(405).end(`Method ${req.method} Not Allowed`);
     }
   } catch (error) {

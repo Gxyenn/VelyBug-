@@ -276,7 +276,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout, keys, onAddKe
                 <div>
                     <label className="text-sm font-medium text-gray-300">Change My Key</label>
                     <div className="flex items-center gap-2 mt-1">
-                        <input type="text" placeholder="Enter new key" value={newAdminKey} onChange={e => setNewAdminKey(e.target.value)} className="w-full p-2 text-sm bg-gray-900 rounded-md border border--gray-700 focus:ring-[#8A2BE2]"/>
+                        <input type="text" placeholder="Enter new key" value={newAdminKey} onChange={e => setNewAdminKey(e.target.value)} className="w-full p-2 text-sm bg-gray-900 rounded-md border border-gray-700 focus:ring-[#8A2BE2]"/>
                         <button onClick={handleChangeMyKey} className="px-4 py-2 text-sm bg-gradient-to-r from-amber-500 to-orange-600 hover:opacity-90 rounded-md text-white whitespace-nowrap">Change Key</button>
                     </div>
                 </div>

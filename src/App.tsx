@@ -51,7 +51,9 @@ const App: React.FC = () => {
       setServers(serversData);
 
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'An unknown error occurred.');
+      const errorMsg = e instanceof Error ? e.message : 'An unknown error occurred.';
+      console.error("Fetch Data Error:", errorMsg);
+      setError(errorMsg);
     } finally {
       setLoading(false);
     }
@@ -87,11 +89,18 @@ const App: React.FC = () => {
   };
   
   const handleUpdateKey = async (key: Key) => {
-    // Note: Vercel serverless functions don't easily support PUT/PATCH with query params.
-    // A more robust API would have /api/keys/[id]. For now, we'll delete and re-add.
-    await handleDeleteKey(key.id);
-    const { id, ...keyData } = key;
-    await handleAddKey(keyData);
+    const response = await fetch('/api/keys', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(key),
+    });
+    if (response.ok) {
+        const updatedKey = await response.json();
+        setKeys(prev => prev.map(k => (k.id === updatedKey.id ? updatedKey : k)));
+    } else {
+        console.error("Failed to update key");
+        alert("Error: Could not update the key on the server.");
+    }
   }
 
   const handleAddServer = async (server: Omit<Server, 'id'>) => {
@@ -135,14 +144,36 @@ const App: React.FC = () => {
   
   const renderContent = () => {
     if (loading) {
-      return <Spinner />;
+      return (
+        <div className="flex flex-col items-center justify-center text-center animate-fade-in">
+          <Spinner />
+          <p className="mt-4 text-lg font-semibold text-gray-300">Loading Application</p>
+          <p className="text-sm text-gray-500">Please wait a moment...</p>
+        </div>
+      );
     }
     if (error) {
-        return <div className="text-center text-red-400">
-            <h2 className="text-xl font-semibold">Error</h2>
-            <p>{error}</p>
-            <button onClick={fetchData} className="mt-4 px-4 py-2 bg-violet-600 rounded-md hover:bg-violet-700">Try Again</button>
-        </div>
+        return (
+          <div className="w-full max-w-md mx-auto bg-gray-900 shadow-2xl rounded-2xl p-8 border border-red-500/50 animate-fade-in">
+            <div className="flex flex-col items-center text-center">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <h2 className="mt-4 text-2xl font-semibold text-red-400">Application Error</h2>
+              <p className="mt-2 text-gray-300">Could not load required data from the server.</p>
+              <div className="w-full mt-4 text-left">
+                <p className="text-sm text-gray-400 font-semibold">Details:</p>
+                <p className="mt-1 text-xs text-gray-400 bg-gray-800 p-2 rounded-md font-mono break-words">{error}</p>
+              </div>
+              <p className="mt-4 text-sm text-gray-500">
+                This is likely due to a server configuration issue. Please ensure all required environment variables (e.g., <code className="text-amber-400">MONGO_URI</code>) are set correctly in your deployment environment.
+              </p>
+              <button onClick={fetchData} className="mt-6 px-5 py-2.5 bg-violet-600 text-white font-semibold rounded-lg hover:bg-violet-700 transition-all">
+                Try Again
+              </button>
+            </div>
+          </div>
+        );
     }
 
     if (!auth.isAuthenticated) {
