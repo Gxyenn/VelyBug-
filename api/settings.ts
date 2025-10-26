@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { connectToDatabase } from './lib/mongodb';
+import { connectToDatabase } from './lib/mongodb.js';
 
 const SETTINGS_ID = 'global_settings'; // Use a fixed identifier for the single settings document
 
