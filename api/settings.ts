@@ -20,8 +20,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             mongoURI: '' // This shouldn't be exposed to client
           };
           await settingsCollection.insertOne(defaultSettings);
-          settings = defaultSettings;
+          settings = await settingsCollection.findOne({ settingsId: SETTINGS_ID });
         }
+        
+        if (!settings) {
+            return res.status(500).json({ message: "Failed to load settings." });
+        }
+
         const { _id, mongoURI, ...clientSettings } = settings;
         return res.status(200).json(clientSettings);
       }
@@ -29,7 +34,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         const newSettings = req.body;
         // Don't save mongoURI from client
         delete newSettings.mongoURI;
-        const result = await settingsCollection.updateOne(
+        await settingsCollection.updateOne(
           { settingsId: SETTINGS_ID },
           { $set: newSettings },
           { upsert: true }
