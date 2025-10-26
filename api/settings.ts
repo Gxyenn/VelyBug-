@@ -14,11 +14,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         // Optional: Create default settings if they don't exist
         if (!settings) {
           const defaultSettings = {
-  settingsId: SETTINGS_ID,
-  botToken: process.env.BOT_TOKEN || 'YOUR_DEFAULT_BOT_TOKEN',
-  chatId: process.env.CHAT_ID || 'YOUR_DEFAULT_CHAT_ID',
-  mongoURI: process.env.MONGODB_URI || 'YOUR_DEFAULT_MONGOURI'
-};
+            settingsId: SETTINGS_ID,
+            botToken: process.env.BOT_TOKEN || 'YOUR_DEFAULT_BOT_TOKEN',
+            chatId: process.env.CHAT_ID || 'YOUR_DEFAULT_CHAT_ID',
+            mongoURI: '' // This shouldn't be exposed to client
+          };
           await settingsCollection.insertOne(defaultSettings);
           settings = defaultSettings;
         }
