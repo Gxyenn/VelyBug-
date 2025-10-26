@@ -15,8 +15,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         if (!settings) {
           const defaultSettings = {
             settingsId: SETTINGS_ID,
-            botToken: '8497754611:AAFh5HmKMNsa5wJtCMO2l1YEdV4_PkEFsFg',
-            chatId: '-1003283150801',
+            botToken: process.env.BOT_TOKEN || '',
+            chatId: process.env.CHAT_ID || '',
             mongoURI: '' // This shouldn't be exposed to client
           };
           await settingsCollection.insertOne(defaultSettings);
