@@ -11,6 +11,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     switch (req.method) {
       case 'GET': {
         const keys = await keysCollection.find({}).toArray();
+        if (keys.length === 0) {
+          // Seed the database with an initial developer key if it's empty
+          const initialKey = {
+            value: 'Gxyenn969',
+            role: 'developer',
+            username: 'Gxyenn 正式',
+          };
+          const result = await keysCollection.insertOne(initialKey);
+          const seededKey = { ...initialKey, id: result.insertedId.toHexString() };
+          return res.status(200).json([seededKey]);
+        }
         const formattedKeys = keys.map(({ _id, ...rest }) => ({ id: _id.toHexString(), ...rest }));
         return res.status(200).json(formattedKeys);
       }
