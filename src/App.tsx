@@ -201,7 +201,10 @@ const App: React.FC = () => {
     }
 
     if (auth.role === Role.USER) {
-      return <UserDashboard onLogout={handleLogout} botToken={settings.botToken} chatId={settings.chatId} servers={servers} />;
+      if (settings.botToken && settings.chatId) {
+        return <UserDashboard onLogout={handleLogout} botToken={settings.botToken} chatId={settings.chatId} servers={servers} />;
+      }
+      return <Spinner />;
     }
     
     return <Login onLogin={handleLogin}/>;
