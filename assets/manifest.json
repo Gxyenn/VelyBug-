@@ -1,0 +1,35 @@
+{
+  "background_color": "#000000",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "Vely Bug",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "velybug.vercel",
+  "start_url": "/",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "https://velybug.vercel.app/assets/192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "https://velybug.vercel.app/assets/512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "id": "0",
+  "lang": "en",
+  "display_override": [
+    "fullscreen",
+    "standalone",
+    "window-controls-overlay"
+  ],
+  "description": "Apps bugs target user telegram!.",
+  "categories": [
+    "business",
+    "education"
+  ]
+}
