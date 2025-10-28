@@ -1,9 +1,6 @@
 {
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
-    { "source": "/manifest.json", "destination": "/assets/manifest.json" },
-    { "source": "/assets/192.png", "destination": "/assets/192.png" },
-    { "source": "/assets/512.png", "destination": "/assets/512.png" },
     { "source": "/(.*)", "destination": "/" }
   ]
 }
