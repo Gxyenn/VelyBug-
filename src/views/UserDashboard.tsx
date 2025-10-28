@@ -150,18 +150,18 @@ const UserDashboard: React.FC<UserDashboardProps> = ({ onLogout, botToken, chatI
         return (
             <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
-                    <label htmlFor="target" className="block text-gray-300 text-sm font-medium mb-2">Target Username</label>
+                    <label htmlFor="target" className="block text-gray-300 text-sm font-medium mb-2">Target Number</label>
                     <input
                         id="target"
                         type="text"
                         value={target}
                         onChange={(e) => setTarget(e.target.value)}
                         className="w-full px-4 py-3 rounded-lg bg-gray-800 text-gray-100 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-[#8A2BE2] transition duration-200"
-                        placeholder="@username"
+                        placeholder="@Number"
                     />
                 </div>
                 <div className="relative">
-                    <label htmlFor="server" className="block text-gray-300 text-sm font-medium mb-2">Select Server</label>
+                    <label htmlFor="server" className="block text-gray-300 text-sm font-medium mb-2">Select Type</label>
                     <select
                         id="server"
                         value={selectedServerId}
@@ -208,8 +208,8 @@ const UserDashboard: React.FC<UserDashboardProps> = ({ onLogout, botToken, chatI
         <div className="bg-gray-900 shadow-2xl rounded-2xl p-8 border border-gray-700">
             <div className="flex flex-col items-center text-center mb-8">
                 <img src="https://files.catbox.moe/46iz0p.gif" alt="Vely Logo" className="w-24 h-24 rounded-2xl object-cover logo-animated-aura mb-6" />
-                <h2 className="text-2xl font-bold text-gray-100">Command Center</h2>
-                <p className="text-gray-400 mt-1">Send your command to the server</p>
+                <h2 className="text-2xl font-bold text-gray-100">Vely Bug</h2>
+                <p className="text-gray-400 mt-1">Send your target Slect Type bug</p>
             </div>
             {renderContent()}
         </div>

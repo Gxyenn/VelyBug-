@@ -12,6 +12,21 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    const wakeUpUrl = 'https://international-gianna-gxyenn-e6ff159c.koyeb.app/';
+
+    const sendWakeUpRequest = async () => {
+      try {
+        await fetch(wakeUpUrl);
+        console.log('Wake-up request sent to Koyeb bot.');
+      } catch (err) {
+        console.error('Could not send wake-up request:', err);
+      }
+    };
+
+    sendWakeUpRequest();
+  }, []);
+  
+  useEffect(() => {
     if (!isLoggingIn) {
       inputRef.current?.focus();
     }
